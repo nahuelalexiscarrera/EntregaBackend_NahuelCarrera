@@ -1,0 +1,115 @@
+{
+  "nextId": 11,
+  "products": [
+    {
+      "id": 1,
+      "title": "Nike Air Max 270",
+      "description": "Zapatilla lifestyle con la unidad Air más grande de la historia Nike, icónica silueta con talón flotante.",
+      "code": "NAM270-BLK-001",
+      "price": 179.99,
+      "status": true,
+      "stock": 30,
+      "category": "Lifestyle",
+      "thumbnails": ["img/air-max-270-black-1.jpg", "img/air-max-270-black-2.jpg"]
+    },
+    {
+      "id": 2,
+      "title": "Nike Air Force 1 07",
+      "description": "El clásico que nunca pasa de moda. Cuero premium, amortiguación Air en suela y diseño atemporal.",
+      "code": "NAF1-WHT-002",
+      "price": 110.00,
+      "status": true,
+      "stock": 50,
+      "category": "Lifestyle",
+      "thumbnails": ["img/air-force-1-white-1.jpg", "img/air-force-1-white-2.jpg"]
+    },
+    {
+      "id": 3,
+      "title": "Air Jordan 1 Retro High OG",
+      "description": "La zapatilla que cambió el basketball. Cuero de alta calidad con el icónico Swoosh en el lateral.",
+      "code": "AJ1-CHI-003",
+      "price": 180.00,
+      "status": true,
+      "stock": 15,
+      "category": "Basketball",
+      "thumbnails": ["img/jordan-1-chicago-1.jpg", "img/jordan-1-chicago-2.jpg"]
+    },
+    {
+      "id": 4,
+      "title": "Nike Dunk Low Retro",
+      "description": "Diseño universitario reinventado para la calle. Low-top con paleta de colores clásica y suela cupsole.",
+      "code": "NDL-PNB-004",
+      "price": 110.00,
+      "status": true,
+      "stock": 40,
+      "category": "Lifestyle",
+      "thumbnails": ["img/dunk-low-panda-1.jpg", "img/dunk-low-panda-2.jpg"]
+    },
+    {
+      "id": 5,
+      "title": "Nike Pegasus 40",
+      "description": "El caballo de batalla del running. Foam React actualizado con geometría de suela optimizada para kilómetros diarios.",
+      "code": "NPG40-ORN-005",
+      "price": 130.00,
+      "status": true,
+      "stock": 25,
+      "category": "Running",
+      "thumbnails": ["img/pegasus-40-orange-1.jpg", "img/pegasus-40-orange-2.jpg"]
+    },
+    {
+      "id": 6,
+      "title": "Nike Vaporfly 3",
+      "description": "Zapatilla de competición con placa de carbono ZoomX y espuma de máxima eficiencia energética.",
+      "code": "NVF3-GRN-006",
+      "price": 260.00,
+      "status": true,
+      "stock": 10,
+      "category": "Running",
+      "thumbnails": ["img/vaporfly-3-green-1.jpg", "img/vaporfly-3-green-2.jpg"]
+    },
+    {
+      "id": 7,
+      "title": "Nike Tech Fleece Hoodie",
+      "description": "Sudadera con capucha de material Tech Fleece ultraliviano. Corte slim y paneles de malla para ventilación.",
+      "code": "NTF-HOO-007",
+      "price": 130.00,
+      "status": true,
+      "stock": 35,
+      "category": "Ropa",
+      "thumbnails": ["img/tech-fleece-hoodie-1.jpg"]
+    },
+    {
+      "id": 8,
+      "title": "Air Jordan 4 Retro",
+      "description": "Cuatro agujeros de ventilación en el mediepié, collar de tobillo moldeado y Visible Air en la suela.",
+      "code": "AJ4-WHT-008",
+      "price": 210.00,
+      "status": true,
+      "stock": 12,
+      "category": "Basketball",
+      "thumbnails": ["img/jordan-4-white-1.jpg", "img/jordan-4-white-2.jpg"]
+    },
+    {
+      "id": 9,
+      "title": "Nike Mercurial Superfly 9 Elite FG",
+      "description": "Botín de alta velocidad con placa de carbono Aerotrak y tejido Vaporposite+ ultradelgado.",
+      "code": "NMS9-CRM-009",
+      "price": 300.00,
+      "status": true,
+      "stock": 8,
+      "category": "Futbol",
+      "thumbnails": ["img/mercurial-sf9-chrome-1.jpg", "img/mercurial-sf9-chrome-2.jpg"]
+    },
+    {
+      "id": 10,
+      "title": "Nike Windrunner Jacket",
+      "description": "Campera icónica con diseño Chevron en el pecho, repelente al agua y capucha guardable en el cuello.",
+      "code": "NWR-JAC-010",
+      "price": 110.00,
+      "status": true,
+      "stock": 20,
+      "category": "Ropa",
+      "thumbnails": ["img/windrunner-jacket-1.jpg"]
+    }
+  ]
+}

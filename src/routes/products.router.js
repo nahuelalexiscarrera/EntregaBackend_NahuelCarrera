@@ -23,6 +23,11 @@ router.post('/', async (req, res) => {
     }
 
     const product = await productManager.add({ title, description, code, price, status, stock, category, thumbnails })
+
+    const io = req.app.get('io')
+    const updated = await productManager.getAll()
+    io.emit('updateProducts', updated)
+
     res.status(201).json({ status: 'success', data: product })
 })
 
@@ -35,6 +40,11 @@ router.put('/:pid', async (req, res) => {
 router.delete('/:pid', async (req, res) => {
     const deleted = await productManager.delete(req.params.pid)
     if (!deleted) return res.status(404).json({ status: 'error', message: 'Producto no encontrado' })
+
+    const io = req.app.get('io')
+    const updated = await productManager.getAll()
+    io.emit('updateProducts', updated)
+
     res.json({ status: 'success', message: 'Producto eliminado' })
 })
 

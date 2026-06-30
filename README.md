@@ -1,37 +1,46 @@
-# Backend Entrega 1 — Nahuel Carrera
+# Backend Entrega 2 — Nahuel Carrera
 
-API REST desarrollada con **Node.js** y **Express** como primera entrega del curso de Backend en CoderHouse. Implementa un CRUD completo de productos y gestión de carritos de compra, con persistencia de datos en archivos JSON.
+API REST con vistas en tiempo real, desarrollada con **Node.js**, **Express**, **Handlebars** y **Socket.io** como segunda entrega del curso de Backend en CoderHouse.
 
 ---
 
-##  Tecnologías
+## 🚀 Tecnologías
 
 - **Node.js** (ES Modules)
 - **Express 4.x**
-- Persistencia en archivos **JSON** (sin base de datos)
+- **express-handlebars** — Motor de plantillas
+- **Socket.io** — Comunicación en tiempo real
+- Persistencia en archivos **JSON**
 
 ---
 
-## Estructura del proyecto
+## 📁 Estructura del proyecto
 
 ```
-├── app.js                        # Entry point del servidor
+├── app.js                              # Entry point (HTTP + Socket.io)
 ├── package.json
+├── public/                             # Archivos estáticos
 └── src/
     ├── data/
-    │   ├── products.json         # Base de datos de productos
-    │   └── carts.json            # Base de datos de carritos
+    │   ├── products.json               # Base de datos de productos
+    │   └── carts.json                  # Base de datos de carritos
     ├── managers/
-    │   ├── ProductManager.js     # Lógica CRUD de productos
-    │   └── CartManager.js        # Lógica de carritos
-    └── routes/
-        ├── products.router.js    # Rutas /api/products
-        └── carts.router.js       # Rutas /api/carts
+    │   ├── ProductManager.js           # Lógica CRUD de productos
+    │   └── CartManager.js              # Lógica de carritos
+    ├── routes/
+    │   ├── products.router.js          # Rutas /api/products
+    │   ├── carts.router.js             # Rutas /api/carts
+    │   └── views.router.js             # Rutas de vistas
+    └── views/
+        ├── layouts/
+        │   └── main.handlebars         # Layout principal
+        ├── home.handlebars             # Lista estática de productos
+        └── realTimeProducts.handlebars # Lista en tiempo real + formulario
 ```
 
 ---
 
-## Instalación y uso
+## ⚙️ Instalación y uso
 
 ```bash
 # Clonar el repositorio
@@ -48,11 +57,20 @@ npm run dev
 npm start
 ```
 
-El servidor quedará escuchando en `http://localhost:8080`.
+El servidor queda escuchando en `http://localhost:8080`.
 
 ---
 
-##  Endpoints — Productos
+## 🖥️ Vistas
+
+| Ruta | Descripción |
+|------|-------------|
+| `GET /` | Lista estática de productos (Handlebars SSR) |
+| `GET /realtimeproducts` | Lista en tiempo real con WebSockets + formulario para crear/eliminar |
+
+---
+
+## 📦 Endpoints API — Productos
 
 | Método | Ruta | Descripción |
 |--------|------|-------------|
@@ -77,29 +95,35 @@ El servidor quedará escuchando en `http://localhost:8080`.
 }
 ```
 
-> **Campos obligatorios:** `title`, `description`, `code`, `price`, `stock`, `category`.  
-> `status` (boolean, default `true`) y `thumbnails` (array, default `[]`) son opcionales.
+> **Campos obligatorios:** `title`, `description`, `code`, `price`, `stock`, `category`.
+> `status` (default `true`) y `thumbnails` (default `[]`) son opcionales.
 
+---
 
-
-##  Endpoints — Carritos
+## 🛒 Endpoints API — Carritos
 
 | Método | Ruta | Descripción |
 |--------|------|-------------|
 | `POST` | `/api/carts` | Crear un nuevo carrito vacío |
 | `GET` | `/api/carts/:cid` | Obtener un carrito por ID |
-| `POST` | `/api/carts/:cid/product/:pid` | Agregar un producto al carrito (incrementa cantidad si ya existe) |
+| `POST` | `/api/carts/:cid/product/:pid` | Agregar un producto al carrito |
 
+---
 
+## 🔌 WebSockets
 
-##  Notas
+La vista `/realtimeproducts` se conecta por Socket.io. Los eventos son:
 
-- Los datos se persisten automáticamente en `src/data/products.json` y `src/data/carts.json`.
-- Los IDs se auto-incrementan y son gestionados por los managers.
-- No se puede modificar el `id` de un producto al hacer `PUT` (el campo es ignorado).
+| Evento | Dirección | Descripción |
+|--------|-----------|-------------|
+| `updateProducts` | Server → Client | Envía la lista completa actualizada |
+| `newProduct` | Client → Server | Crea un producto desde el formulario |
+| `deleteProduct` | Client → Server | Elimina un producto por ID |
 
+Las rutas `POST /api/products` y `DELETE /api/products/:pid` también emiten `updateProducts` a todos los clientes conectados.
 
+---
 
-## Autor
+## 👤 Autor
 
-**Nahuel Alexis Carrera** 
+**Nahuel Alexis Carrera** — CoderHouse Backend

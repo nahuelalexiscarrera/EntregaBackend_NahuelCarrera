@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { asyncHandler } from '../utils/asyncHandler.js'
-import { attachUser, passportCallView } from '../middlewares/auth.js'
+import { attachUser, passportCallView, authorizationView } from '../middlewares/auth.js'
 import {
     renderHome,
     renderRealTimeProducts,
@@ -14,7 +14,7 @@ import {
 const router = Router()
 
 router.get('/', attachUser, asyncHandler(renderHome))
-router.get('/realtimeproducts', attachUser, renderRealTimeProducts)
+router.get('/realtimeproducts', passportCallView, authorizationView('admin'), renderRealTimeProducts)
 router.get('/products', attachUser, asyncHandler(renderProducts))
 router.get('/products/:pid', attachUser, asyncHandler(renderProductDetail))
 router.get('/carts/:cid', passportCallView, asyncHandler(renderCart))

@@ -165,15 +165,15 @@ El purchase verifica stock producto por producto con un decremento atómico. Los
 | `GET /carts/:cid` | Carrito con productos populados, subtotales, total y botón de compra |
 | `GET /login` y `GET /register` | Autenticación |
 | `GET /` | Lista simple de productos |
-| `GET /realtimeproducts` | Alta y baja de productos en tiempo real con WebSockets |
+| `GET /realtimeproducts` | Alta y baja de productos en tiempo real con WebSockets. Solo admin |
 
 ## WebSockets
 
 | Evento | Dirección | Descripción |
 |--------|-----------|-------------|
 | `updateProducts` | Server a Client | Lista completa actualizada |
-| `newProduct` | Client a Server | Crear producto desde el formulario |
-| `deleteProduct` | Client a Server | Eliminar producto por id |
+| `newProduct` | Client a Server | Crear producto desde el formulario. Requiere rol admin |
+| `deleteProduct` | Client a Server | Eliminar producto por id. Requiere rol admin |
 | `productError` | Server a Client | Error de operación (por ejemplo código duplicado) |
 
 ## Autor

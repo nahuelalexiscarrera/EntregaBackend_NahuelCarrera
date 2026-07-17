@@ -97,10 +97,12 @@ class CartService {
 export const cartService = new CartService()
 
 export const isValidCartProducts = products =>
-    Array.isArray(products) && products.every(item =>
+    Array.isArray(products) &&
+    products.every(item =>
         item &&
         typeof item === 'object' &&
         mongoose.isValidObjectId(item.product) &&
         Number.isInteger(item.quantity) &&
         item.quantity >= 1
-    )
+    ) &&
+    new Set(products.map(item => String(item.product))).size === products.length

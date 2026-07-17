@@ -1,3 +1,4 @@
+import { isValidObjectId } from 'mongoose'
 import { productService } from '../services/product.service.js'
 import { cartService } from '../services/cart.service.js'
 import { buildPaginatedResponse } from './products.controller.js'
@@ -27,12 +28,18 @@ export const renderProducts = async (req, res) => {
 }
 
 export const renderProductDetail = async (req, res) => {
+    if (!isValidObjectId(req.params.pid)) {
+        return res.status(404).render('index', { products: [], notFoundMessage: 'Producto no encontrado' })
+    }
     const product = await productService.getById(req.params.pid)
     if (!product) return res.status(404).render('index', { products: [], notFoundMessage: 'Producto no encontrado' })
     res.render('productDetail', { product })
 }
 
 export const renderCart = async (req, res) => {
+    if (!isValidObjectId(req.params.cid)) {
+        return res.status(404).render('cart', { items: [], notFoundMessage: 'Carrito no encontrado' })
+    }
     const cart = await cartService.getByIdPopulated(req.params.cid)
     if (!cart) return res.status(404).render('cart', { items: [], notFoundMessage: 'Carrito no encontrado' })
 

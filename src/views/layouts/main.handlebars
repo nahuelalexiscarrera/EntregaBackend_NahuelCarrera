@@ -10,7 +10,9 @@
     <nav>
         <div class="nav-links">
             <a href="/products">Productos</a>
-            <a href="/realtimeproducts">Tiempo real</a>
+            {{#if (eq user.role 'admin')}}
+                <a href="/realtimeproducts">Tiempo real</a>
+            {{/if}}
         </div>
         <div class="nav-session">
             {{#if user}}

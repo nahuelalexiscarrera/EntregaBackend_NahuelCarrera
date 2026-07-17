@@ -27,7 +27,6 @@ const io = new Server(httpServer)
 
 app.engine('handlebars', engine({
     helpers: {
-        multiply: (a, b) => a * b,
         eq: (a, b) => a === b
     }
 }))

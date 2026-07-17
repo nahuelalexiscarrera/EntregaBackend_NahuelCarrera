@@ -58,6 +58,10 @@ export const purchaseCart = async (req, res) => {
     const result = await cartService.purchase(req.params.cid, req.user.email)
     if (!result) return res.status(404).json({ status: 'error', message: 'Carrito no encontrado' })
 
+    if (!result.ticket && result.notProcessedIds.length === 0) {
+        return res.status(400).json({ status: 'error', message: 'El carrito está vacío' })
+    }
+
     const message = result.ticket
         ? 'Compra realizada'
         : 'No se pudo procesar ningún producto por falta de stock'

@@ -1,0 +1,38 @@
+<h1>Productos</h1>
+
+{{#if notFoundMessage}}
+<p>{{notFoundMessage}}</p>
+{{/if}}
+
+{{#if products.length}}
+<div class="product-grid">
+    {{#each products}}
+    <div class="product-card">
+        <h3>{{this.title}}</h3>
+        <p class="category">{{this.category}}</p>
+        <p class="price">${{this.price}}</p>
+        <p class="stock">Stock: {{this.stock}}</p>
+        <div class="actions">
+            <a href="/products/{{this._id}}">Ver detalle</a>
+            {{#if (eq @root.user.role 'user')}}
+            <button class="add-to-cart" data-pid="{{this._id}}" data-cart="{{@root.user.cart}}">Agregar al carrito</button>
+            {{/if}}
+        </div>
+    </div>
+    {{/each}}
+</div>
+
+<div class="pagination">
+    {{#if pagination.hasPrevPage}}
+    <a href="{{pagination.prevLink}}">Anterior</a>
+    {{/if}}
+    <span>Página {{pagination.page}} de {{pagination.totalPages}}</span>
+    {{#if pagination.hasNextPage}}
+    <a href="{{pagination.nextLink}}">Siguiente</a>
+    {{/if}}
+</div>
+{{else}}
+<p>No hay productos para mostrar.</p>
+{{/if}}
+
+<script src="/js/products.js"></script>

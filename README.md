@@ -1,129 +1,181 @@
-# Backend Entrega 2 — Nahuel Carrera
+# Backend Entrega Final. Nahuel Carrera
 
-API REST con vistas en tiempo real, desarrollada con **Node.js**, **Express**, **Handlebars** y **Socket.io** como segunda entrega del curso de Backend en CoderHouse.
+E-commerce API con persistencia en MongoDB, autenticación JWT por roles, carrito con populate, paginación profesional y cierre de compra con ticket. Proyecto final del curso de Backend en CoderHouse.
 
----
+## Tecnologías
 
-## 🚀 Tecnologías
+- **Node.js** (ES Modules) + **Express 4**
+- **MongoDB** + **Mongoose** + **mongoose-paginate-v2**
+- **Passport** (local + JWT en cookie httpOnly) + **bcrypt**
+- **express-handlebars** + **Socket.io**
 
-- **Node.js** (ES Modules)
-- **Express 4.x**
-- **express-handlebars** — Motor de plantillas
-- **Socket.io** — Comunicación en tiempo real
-- Persistencia en archivos **JSON**
+## Arquitectura
 
----
-
-## 📁 Estructura del proyecto
+El proyecto está organizado por capas: los routers solo definen rutas y middlewares, los controllers manejan request y response, los services concentran la lógica de negocio y el acceso a datos, y los models definen los esquemas de Mongoose.
 
 ```
-├── app.js                              # Entry point (HTTP + Socket.io)
-├── package.json
-├── public/                             # Archivos estáticos
+├── app.js                          Bootstrap del servidor
+├── scripts/seed.js                 Carga inicial de productos y usuario admin
+├── public/                         Estáticos (css y js de cliente)
 └── src/
-    ├── data/
-    │   ├── products.json               # Base de datos de productos
-    │   └── carts.json                  # Base de datos de carritos
-    ├── managers/
-    │   ├── ProductManager.js           # Lógica CRUD de productos
-    │   └── CartManager.js              # Lógica de carritos
-    ├── routes/
-    │   ├── products.router.js          # Rutas /api/products
-    │   ├── carts.router.js             # Rutas /api/carts
-    │   └── views.router.js             # Rutas de vistas
-    └── views/
-        ├── layouts/
-        │   └── main.handlebars         # Layout principal
-        ├── home.handlebars             # Lista estática de productos
-        └── realTimeProducts.handlebars # Lista en tiempo real + formulario
+    ├── config/                     Entorno, conexión a Mongo, passport, socket
+    ├── models/                     Esquemas: Product, Cart, User, Ticket
+    ├── services/                   Lógica de negocio y acceso a datos
+    ├── controllers/                Manejo de request/response
+    ├── routes/                     Definición de rutas y protección
+    ├── middlewares/                Autenticación, autorización y manejo de errores
+    ├── utils/                      Hash, JWT, asyncHandler
+    └── views/                      Plantillas Handlebars
 ```
 
----
+## Instalación y uso
 
-## ⚙️ Instalación y uso
+Requiere MongoDB corriendo (local o Atlas).
 
 ```bash
-# Clonar el repositorio
 git clone https://github.com/nahuelalexiscarrera/EntregaBackend_NahuelCarrera.git
 cd EntregaBackend_NahuelCarrera
-
-# Instalar dependencias
 npm install
 
-# Modo desarrollo (con hot reload)
-npm run dev
+cp .env.example .env
+# Editar .env con la URI de Mongo y un JWT_SECRET propio
 
-# Modo producción
-npm start
+npm run seed      # Carga 10 productos y crea el usuario admin
+npm run dev       # Desarrollo con hot reload
+npm start         # Producción
 ```
 
 El servidor queda escuchando en `http://localhost:8080`.
 
----
+### Variables de entorno
 
-## 🖥️ Vistas
+| Variable | Descripción | Default |
+|----------|-------------|---------|
+| `PORT` | Puerto del servidor | `8080` |
+| `MONGO_URI` | Cadena de conexión a MongoDB | `mongodb://localhost:27017/entrega_final` |
+| `JWT_SECRET` | Secret para firmar los tokens | |
+| `COOKIE_NAME` | Nombre de la cookie de sesión | `authToken` |
+| `ADMIN_EMAIL` / `ADMIN_PASSWORD` | Credenciales del admin que crea el seed | |
 
-| Ruta | Descripción |
-|------|-------------|
-| `GET /` | Lista estática de productos (Handlebars SSR) |
-| `GET /realtimeproducts` | Lista en tiempo real con WebSockets + formulario para crear/eliminar |
+## Roles
 
----
+| Rol | Permisos |
+|-----|----------|
+| `user` | Operar su propio carrito (agregar, quitar, actualizar, comprar) |
+| `admin` | Crear, actualizar y eliminar productos |
 
-## 📦 Endpoints API — Productos
+El admin se crea con `npm run seed` a partir de las credenciales del `.env`. Los usuarios registrados reciben rol `user` y un carrito propio.
+
+## Endpoints API. Sesiones
 
 | Método | Ruta | Descripción |
 |--------|------|-------------|
-| `GET` | `/api/products` | Obtener todos los productos. Acepta `?limit=N` |
-| `GET` | `/api/products/:pid` | Obtener un producto por ID |
-| `POST` | `/api/products` | Crear un nuevo producto |
-| `PUT` | `/api/products/:pid` | Actualizar un producto por ID |
-| `DELETE` | `/api/products/:pid` | Eliminar un producto por ID |
+| `POST` | `/api/sessions/register` | Registrar usuario. Crea su carrito |
+| `POST` | `/api/sessions/login` | Iniciar sesión. Setea cookie httpOnly con JWT |
+| `GET` | `/api/sessions/current` | Datos del usuario autenticado |
+| `POST` | `/api/sessions/logout` | Cerrar sesión |
 
-### Body para `POST /api/products`
+### Body para register
 
 ```json
 {
-  "title": "Nombre del producto",
-  "description": "Descripción",
-  "code": "ABC123",
-  "price": 1500,
-  "stock": 10,
-  "category": "electrónica",
-  "status": true,
-  "thumbnails": []
+  "first_name": "Nahuel",
+  "last_name": "Carrera",
+  "email": "usuario@mail.com",
+  "age": 28,
+  "password": "secreta123"
 }
 ```
 
-> **Campos obligatorios:** `title`, `description`, `code`, `price`, `stock`, `category`.
-> `status` (default `true`) y `thumbnails` (default `[]`) son opcionales.
+## Endpoints API. Productos
 
----
+| Método | Ruta | Descripción | Acceso |
+|--------|------|-------------|--------|
+| `GET` | `/api/products` | Listado paginado con filtros y ordenamiento | Público |
+| `GET` | `/api/products/:pid` | Producto por id | Público |
+| `POST` | `/api/products` | Crear producto | Admin |
+| `PUT` | `/api/products/:pid` | Actualizar producto | Admin |
+| `DELETE` | `/api/products/:pid` | Eliminar producto | Admin |
 
-## 🛒 Endpoints API — Carritos
+### Query params de GET /api/products
 
-| Método | Ruta | Descripción |
-|--------|------|-------------|
-| `POST` | `/api/carts` | Crear un nuevo carrito vacío |
-| `GET` | `/api/carts/:cid` | Obtener un carrito por ID |
-| `POST` | `/api/carts/:cid/product/:pid` | Agregar un producto al carrito |
+| Param | Descripción | Default |
+|-------|-------------|---------|
+| `limit` | Cantidad de resultados por página | `10` |
+| `page` | Página a consultar | `1` |
+| `sort` | `asc` o `desc`, ordena por precio | Sin orden |
+| `query` | `disponible`, `nodisponible` o nombre de categoría | Sin filtro |
 
----
+Respuesta:
 
-## 🔌 WebSockets
+```json
+{
+  "status": "success",
+  "payload": [],
+  "totalPages": 3,
+  "prevPage": 1,
+  "nextPage": 3,
+  "page": 2,
+  "hasPrevPage": true,
+  "hasNextPage": true,
+  "prevLink": "/api/products?limit=4&page=1",
+  "nextLink": "/api/products?limit=4&page=3"
+}
+```
 
-La vista `/realtimeproducts` se conecta por Socket.io. Los eventos son:
+## Endpoints API. Carritos
+
+| Método | Ruta | Descripción | Acceso |
+|--------|------|-------------|--------|
+| `POST` | `/api/carts` | Crear carrito vacío | Público |
+| `GET` | `/api/carts/:cid` | Carrito por id con productos populados | Autenticado |
+| `POST` | `/api/carts/:cid/products/:pid` | Agregar producto (incrementa quantity si ya existe) | User, carrito propio |
+| `PUT` | `/api/carts/:cid/products/:pid` | Actualizar solo la cantidad. Body `{ "quantity": 5 }` | User, carrito propio |
+| `DELETE` | `/api/carts/:cid/products/:pid` | Quitar un producto del carrito | User, carrito propio |
+| `PUT` | `/api/carts/:cid` | Reemplazar todos los productos. Body `{ "products": [{ "product": "pid", "quantity": 2 }] }` | User, carrito propio |
+| `DELETE` | `/api/carts/:cid` | Vaciar el carrito | User, carrito propio |
+| `POST` | `/api/carts/:cid/purchase` | Cierre de compra | User, carrito propio |
+
+### Cierre de compra
+
+El purchase verifica stock producto por producto con un decremento atómico. Los productos con stock suficiente se descuentan y suman al ticket; los que no alcanzan quedan en el carrito. Respuesta:
+
+```json
+{
+  "status": "success",
+  "message": "Compra realizada",
+  "payload": {
+    "ticket": {
+      "code": "uuid",
+      "purchase_datetime": "2026-07-17T00:00:00.000Z",
+      "amount": 179.99,
+      "purchaser": "usuario@mail.com"
+    },
+    "notProcessedIds": []
+  }
+}
+```
+
+## Vistas
+
+| Ruta | Descripción |
+|------|-------------|
+| `GET /products` | Listado paginado con filtros, botón de agregar al carrito y link al detalle |
+| `GET /products/:pid` | Detalle completo del producto con botón de agregar al carrito |
+| `GET /carts/:cid` | Carrito con productos populados, subtotales, total y botón de compra |
+| `GET /login` y `GET /register` | Autenticación |
+| `GET /` | Lista simple de productos |
+| `GET /realtimeproducts` | Alta y baja de productos en tiempo real con WebSockets |
+
+## WebSockets
 
 | Evento | Dirección | Descripción |
 |--------|-----------|-------------|
-| `updateProducts` | Server → Client | Envía la lista completa actualizada |
-| `newProduct` | Client → Server | Crea un producto desde el formulario |
-| `deleteProduct` | Client → Server | Elimina un producto por ID |
+| `updateProducts` | Server a Client | Lista completa actualizada |
+| `newProduct` | Client a Server | Crear producto desde el formulario |
+| `deleteProduct` | Client a Server | Eliminar producto por id |
+| `productError` | Server a Client | Error de operación (por ejemplo código duplicado) |
 
-Las rutas `POST /api/products` y `DELETE /api/products/:pid` también emiten `updateProducts` a todos los clientes conectados.
+## Autor
 
----
-
-## 👤 Autor
-
-**Nahuel Alexis Carrera** — CoderHouse Backend
+**Nahuel Alexis Carrera**. CoderHouse Backend

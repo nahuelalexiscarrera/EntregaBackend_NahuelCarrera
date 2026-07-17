@@ -4,8 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Backend — Nahuel Carrera</title>
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-    {{{body}}}
+    <nav>
+        <div class="nav-links">
+            <a href="/products">Productos</a>
+            <a href="/realtimeproducts">Tiempo real</a>
+        </div>
+        <div class="nav-session">
+            {{#if user}}
+                <span>Bienvenido {{user.first_name}} ({{user.role}})</span>
+                {{#if (eq user.role 'user')}}
+                    <a href="/carts/{{user.cart}}">Mi carrito</a>
+                {{/if}}
+                <button id="logoutBtn">Cerrar sesión</button>
+            {{else}}
+                <a href="/login">Iniciar sesión</a>
+                <a href="/register">Registrarse</a>
+            {{/if}}
+        </div>
+    </nav>
+
+    <main>
+        {{{body}}}
+    </main>
+
+    <script src="/js/session.js"></script>
 </body>
 </html>

@@ -1,0 +1,41 @@
+<h1>Mi carrito</h1>
+
+{{#if notFoundMessage}}
+<p>{{notFoundMessage}}</p>
+{{/if}}
+
+{{#if items.length}}
+<table class="cart-table">
+    <thead>
+        <tr>
+            <th>Producto</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Subtotal</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each items}}
+        <tr>
+            <td>{{this.product.title}}</td>
+            <td>${{this.product.price}}</td>
+            <td>{{this.quantity}}</td>
+            <td>${{this.subtotal}}</td>
+            <td><button class="remove-from-cart" data-pid="{{this.product._id}}" data-cart="{{@root.cartId}}">Quitar</button></td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+<p class="total">Total: ${{total}}</p>
+
+<button id="purchaseBtn" data-cart="{{cartId}}">Finalizar compra</button>
+<div id="ticketResult"></div>
+{{else}}
+    {{#unless notFoundMessage}}
+    <p>El carrito está vacío. <a href="/products">Ver productos</a></p>
+    {{/unless}}
+{{/if}}
+
+<script src="/js/cart.js"></script>

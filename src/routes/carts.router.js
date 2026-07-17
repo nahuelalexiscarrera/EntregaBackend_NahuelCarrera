@@ -1,28 +1,28 @@
 import { Router } from 'express'
-import cartManager from '../managers/CartManager.js'
-import productManager from '../managers/ProductManager.js'
+import { asyncHandler } from '../utils/asyncHandler.js'
+import { passportCall, authorization, ownCart } from '../middlewares/auth.js'
+import {
+    createCart,
+    getCartById,
+    addProductToCart,
+    removeProductFromCart,
+    replaceCartProducts,
+    updateProductQuantity,
+    clearCart,
+    purchaseCart
+} from '../controllers/carts.controller.js'
 
 const router = Router()
 
-router.post('/', async (req, res) => {
-    const cart = await cartManager.create()
-    res.status(201).json({ status: 'success', data: cart })
-})
+const userOwnCart = [passportCall('jwt'), authorization('user'), ownCart]
 
-router.get('/:cid', async (req, res) => {
-    const cart = await cartManager.getById(req.params.cid)
-    if (!cart) return res.status(404).json({ status: 'error', message: 'Carrito no encontrado' })
-    res.json({ status: 'success', data: cart })
-})
-
-router.post('/:cid/product/:pid', async (req, res) => {
-    const product = await productManager.getById(req.params.pid)
-    if (!product) return res.status(404).json({ status: 'error', message: 'Producto no encontrado' })
-
-    const cart = await cartManager.addProduct(req.params.cid, req.params.pid)
-    if (!cart) return res.status(404).json({ status: 'error', message: 'Carrito no encontrado' })
-
-    res.json({ status: 'success', data: cart })
-})
+router.post('/', asyncHandler(createCart))
+router.get('/:cid', passportCall('jwt'), asyncHandler(getCartById))
+router.post('/:cid/products/:pid', userOwnCart, asyncHandler(addProductToCart))
+router.delete('/:cid/products/:pid', userOwnCart, asyncHandler(removeProductFromCart))
+router.put('/:cid', userOwnCart, asyncHandler(replaceCartProducts))
+router.put('/:cid/products/:pid', userOwnCart, asyncHandler(updateProductQuantity))
+router.delete('/:cid', userOwnCart, asyncHandler(clearCart))
+router.post('/:cid/purchase', userOwnCart, asyncHandler(purchaseCart))
 
 export default router

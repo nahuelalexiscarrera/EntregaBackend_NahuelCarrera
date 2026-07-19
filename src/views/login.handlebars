@@ -1,12 +1,37 @@
-<h1>Iniciar sesión</h1>
+<section class="auth-shell">
+    <div class="auth-intro">
+        <p class="context-label">Acceso seguro</p>
+        <h1>Volvé a tu cuenta.</h1>
+        <p>Ingresá para continuar con tu carrito y completar tu compra.</p>
+        <ul class="auth-features">
+            <li>Tu carrito siempre con vos</li>
+            <li>Comprá en pocos pasos</li>
+            <li>Acceso seguro a tu cuenta</li>
+        </ul>
+    </div>
 
-<form id="loginForm" class="auth-form">
-    <input name="email" type="email" placeholder="Email" required />
-    <input name="password" type="password" placeholder="Contraseña" required />
-    <button type="submit">Ingresar</button>
-    <p class="form-error" id="formError"></p>
-</form>
+    <div class="auth-panel">
+        <div class="auth-panel-heading">
+            <p class="section-index">Cuenta</p>
+            <h2>Iniciar sesión</h2>
+            <p>Usá tus credenciales para continuar.</p>
+        </div>
 
-<p>¿No tenés cuenta? <a href="/register">Registrate</a></p>
+        <form id="loginForm" class="auth-form">
+            <div class="field">
+                <label for="login-email">Email</label>
+                <input id="login-email" name="email" type="email" placeholder="nombre@ejemplo.com" autocomplete="email" required>
+            </div>
+            <div class="field">
+                <label for="login-password">Contraseña</label>
+                <input id="login-password" name="password" type="password" placeholder="Ingresá tu contraseña" autocomplete="current-password" required>
+            </div>
+            <button class="button button-primary button-wide" type="submit">Ingresar</button>
+            <p class="form-error" id="formError" role="alert" aria-live="polite"></p>
+        </form>
+
+        <p class="auth-switch">¿No tenés cuenta? <a href="/register">Creala ahora</a></p>
+    </div>
+</section>
 
 <script src="/js/auth.js"></script>

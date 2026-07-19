@@ -23,7 +23,8 @@ export const renderProducts = async (req, res) => {
     const pagination = buildPaginatedResponse(req, result, '/products')
     res.render('index', {
         products: result.docs,
-        pagination
+        pagination,
+        currentQuery: query
     })
 }
 

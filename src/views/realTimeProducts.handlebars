@@ -1,18 +1,65 @@
-<h1>Productos en Tiempo Real</h1>
+<header class="page-header admin-header">
+    <div>
+        <p class="context-label context-label-dark">Gestión de catálogo</p>
+        <h1>Administrar productos</h1>
+        <p>Creá y eliminá productos. Los cambios aparecerán en la tienda al instante.</p>
+    </div>
+    <span class="live-badge"><span aria-hidden="true"></span>Tienda conectada</span>
+</header>
 
-<form id="productForm">
-    <input name="title" placeholder="Título" required />
-    <input name="description" placeholder="Descripción" required />
-    <input name="code" placeholder="Código" required />
-    <input name="price" type="number" placeholder="Precio" required />
-    <input name="stock" type="number" placeholder="Stock" required />
-    <input name="category" placeholder="Categoría" required />
-    <button type="submit">Agregar</button>
-</form>
+<section class="admin-layout">
+    <form id="productForm" class="admin-form">
+        <div class="admin-form-heading">
+            <p class="section-index">Nuevo registro</p>
+            <h2>Agregar producto</h2>
+        </div>
+        <div class="field">
+            <label for="product-title">Título</label>
+            <input id="product-title" name="title" placeholder="Ej. Nike Pegasus 40" required>
+        </div>
+        <div class="field">
+            <label for="product-description">Descripción</label>
+            <textarea id="product-description" name="description" placeholder="Características principales" rows="4" required></textarea>
+        </div>
+        <div class="form-row">
+            <div class="field">
+                <label for="product-code">Código</label>
+                <input id="product-code" name="code" placeholder="SKU-001" required>
+            </div>
+            <div class="field">
+                <label for="product-category">Categoría</label>
+                <input id="product-category" name="category" placeholder="Running" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="field">
+                <label for="product-price">Precio USD</label>
+                <input id="product-price" name="price" type="number" placeholder="130" min="0" step="0.01" inputmode="decimal" required>
+            </div>
+            <div class="field">
+                <label for="product-stock">Stock</label>
+                <input id="product-stock" name="stock" type="number" placeholder="20" min="0" inputmode="numeric" required>
+            </div>
+        </div>
+        <div class="field">
+            <label for="product-thumbnail">Ruta de imagen <span>(opcional)</span></label>
+            <input id="product-thumbnail" name="thumbnail" placeholder="img/producto.jpg">
+        </div>
+        <button class="button button-primary button-wide" type="submit">Publicar producto</button>
+        <p class="form-error" id="socketError" role="alert" aria-live="polite"></p>
+    </form>
 
-<p class="form-error" id="socketError"></p>
-
-<ul id="productList"></ul>
+    <section class="admin-inventory" aria-labelledby="inventory-title">
+        <div class="admin-inventory-heading">
+            <div>
+                <p class="section-index">Inventario</p>
+                <h2 id="inventory-title">Productos activos</h2>
+            </div>
+            <span id="productCount" class="count-badge">0 productos</span>
+        </div>
+        <ul id="productList" class="admin-product-list" aria-live="polite"></ul>
+    </section>
+</section>
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/realtime.js"></script>

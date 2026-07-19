@@ -1,40 +1,76 @@
-<h1>Mi carrito</h1>
+<header class="page-header">
+    <div>
+        <p class="context-label context-label-dark">Tu selección</p>
+        <h1>Mi carrito</h1>
+    </div>
+    <a class="button button-secondary" href="/products">Seguir comprando</a>
+</header>
 
 {{#if notFoundMessage}}
-<p>{{notFoundMessage}}</p>
+<div class="empty-state" role="alert">
+    <strong>No encontramos ese carrito</strong>
+    <p>{{notFoundMessage}}</p>
+    <a href="/products">Volver al catálogo</a>
+</div>
 {{/if}}
 
 {{#if items.length}}
-<table class="cart-table">
-    <thead>
-        <tr>
-            <th>Producto</th>
-            <th>Precio</th>
-            <th>Cantidad</th>
-            <th>Subtotal</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        {{#each items}}
-        <tr>
-            <td>{{this.product.title}}</td>
-            <td>${{this.product.price}}</td>
-            <td>{{this.quantity}}</td>
-            <td>${{this.subtotal}}</td>
-            <td><button class="remove-from-cart" data-pid="{{this.product._id}}" data-cart="{{@root.cartId}}">Quitar</button></td>
-        </tr>
-        {{/each}}
-    </tbody>
-</table>
+<div class="cart-layout">
+    <div class="cart-table-wrap">
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th scope="col">Producto</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Subtotal</th>
+                    <th scope="col"><span class="sr-only">Acciones</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each items}}
+                <tr>
+                    <td data-label="Producto">
+                        <div class="cart-product">
+                            {{#if this.product.thumbnails}}
+                            <img src="{{productImage this.product.thumbnails}}" alt="" width="72" height="72">
+                            {{/if}}
+                            <div>
+                                <strong>{{this.product.title}}</strong>
+                                <span>{{this.product.category}}</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td data-label="Precio">USD {{formatPrice this.product.price}}</td>
+                    <td data-label="Cantidad"><span class="quantity-badge">{{this.quantity}}</span></td>
+                    <td data-label="Subtotal"><strong>USD {{formatPrice this.subtotal}}</strong></td>
+                    <td data-label="Acciones"><button class="button button-danger button-compact remove-from-cart" type="button" data-pid="{{this.product._id}}" data-cart="{{@root.cartId}}">Quitar</button></td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
 
-<p class="total">Total: ${{total}}</p>
-
-<button id="purchaseBtn" data-cart="{{cartId}}">Finalizar compra</button>
-<div id="ticketResult"></div>
+    <aside class="cart-summary" aria-labelledby="summary-title">
+        <p class="section-index">Resumen</p>
+        <h2 id="summary-title">Todo listo.</h2>
+        <div class="summary-total">
+            <span>Total</span>
+            <strong>USD {{formatPrice total}}</strong>
+        </div>
+        <p>Reservaremos tus productos cuando confirmes la compra.</p>
+        <button class="button button-accent button-wide" id="purchaseBtn" type="button" data-cart="{{cartId}}">Finalizar compra</button>
+        <div id="ticketResult" role="status" aria-live="polite"></div>
+    </aside>
+</div>
 {{else}}
     {{#unless notFoundMessage}}
-    <p>El carrito está vacío. <a href="/products">Ver productos</a></p>
+    <div class="empty-state empty-state-large" role="status">
+        <span class="empty-state-mark" aria-hidden="true">0</span>
+        <strong>Tu carrito está vacío</strong>
+        <p>Explorá el catálogo y elegí el próximo producto para tu rotación.</p>
+        <a class="button button-primary" href="/products">Ver productos</a>
+    </div>
     {{/unless}}
 {{/if}}
 

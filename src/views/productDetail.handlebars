@@ -1,19 +1,51 @@
-<a href="/products">Volver a productos</a>
+<nav class="breadcrumb" aria-label="Migas de pan">
+    <a href="/products">Catálogo</a>
+    <span aria-hidden="true">/</span>
+    <span aria-current="page">{{product.title}}</span>
+</nav>
 
-<div class="product-detail">
-    <h1>{{product.title}}</h1>
-    <p class="category">{{product.category}} — Código {{product.code}}</p>
-    <p class="description">{{product.description}}</p>
-    <p class="price">${{product.price}}</p>
-    <p class="stock">Stock disponible: {{product.stock}}</p>
+<article class="product-detail">
+    <div class="product-detail-media">
+        {{#if product.thumbnails}}
+            <img src="{{productImage product.thumbnails}}" alt="{{product.title}}" width="960" height="960">
+        {{else}}
+            <div class="product-image-placeholder">Imagen no disponible</div>
+        {{/if}}
+        <span class="media-code">{{product.code}}</span>
+    </div>
 
-    {{#if (eq user.role 'user')}}
-    <button class="add-to-cart" data-pid="{{product._id}}" data-cart="{{user.cart}}">Agregar al carrito</button>
-    {{else}}
-        {{#unless user}}
-        <p><a href="/login">Iniciá sesión</a> para agregar productos al carrito.</p>
-        {{/unless}}
-    {{/if}}
-</div>
+    <div class="product-detail-content">
+        <div class="product-detail-header">
+            <p class="category-line"><span>{{product.category}}</span> / En stock</p>
+            <h1>{{product.title}}</h1>
+            <p class="description">{{product.description}}</p>
+        </div>
+
+        <div class="purchase-block">
+            <div>
+                <span class="price-label">Precio</span>
+                <p class="price">USD {{formatPrice product.price}}</p>
+            </div>
+            <p class="stock"><span class="stock-indicator" aria-hidden="true"></span>{{product.stock}} unidades disponibles</p>
+        </div>
+
+        {{#if (eq user.role 'user')}}
+            <button class="button button-primary button-wide add-to-cart" type="button" data-pid="{{product._id}}" data-cart="{{user.cart}}">Agregar al carrito</button>
+        {{else}}
+            {{#unless user}}
+            <div class="sign-in-prompt">
+                <p>Ingresá para sumar este producto a tu carrito.</p>
+                <a class="button button-primary" href="/login">Iniciar sesión</a>
+            </div>
+            {{/unless}}
+        {{/if}}
+
+        <dl class="technical-list">
+            <div><dt>Categoría</dt><dd>{{product.category}}</dd></div>
+            <div><dt>Código</dt><dd>{{product.code}}</dd></div>
+            <div><dt>Disponibilidad</dt><dd>{{product.stock}} unidades</dd></div>
+        </dl>
+    </div>
+</article>
 
 <script src="/js/products.js"></script>

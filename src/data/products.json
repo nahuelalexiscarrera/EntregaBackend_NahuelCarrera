@@ -10,7 +10,7 @@
       "status": true,
       "stock": 30,
       "category": "Lifestyle",
-      "thumbnails": ["img/air-max-270-black-1.jpg", "img/air-max-270-black-2.jpg"]
+      "thumbnails": ["img/air-max-270-black-1.jpg"]
     },
     {
       "id": 2,
@@ -21,7 +21,7 @@
       "status": true,
       "stock": 50,
       "category": "Lifestyle",
-      "thumbnails": ["img/air-force-1-white-1.jpg", "img/air-force-1-white-2.jpg"]
+      "thumbnails": ["img/air-force-1-white-1.jpg"]
     },
     {
       "id": 3,
@@ -32,7 +32,7 @@
       "status": true,
       "stock": 15,
       "category": "Basketball",
-      "thumbnails": ["img/jordan-1-chicago-1.jpg", "img/jordan-1-chicago-2.jpg"]
+      "thumbnails": ["img/jordan-1-chicago-1.jpg"]
     },
     {
       "id": 4,
@@ -43,7 +43,7 @@
       "status": true,
       "stock": 40,
       "category": "Lifestyle",
-      "thumbnails": ["img/dunk-low-panda-1.jpg", "img/dunk-low-panda-2.jpg"]
+      "thumbnails": ["img/dunk-low-panda-1.jpg"]
     },
     {
       "id": 5,
@@ -54,7 +54,7 @@
       "status": true,
       "stock": 25,
       "category": "Running",
-      "thumbnails": ["img/pegasus-40-orange-1.jpg", "img/pegasus-40-orange-2.jpg"]
+      "thumbnails": ["img/pegasus-40-orange-1.jpg"]
     },
     {
       "id": 6,
@@ -65,7 +65,7 @@
       "status": true,
       "stock": 10,
       "category": "Running",
-      "thumbnails": ["img/vaporfly-3-green-1.jpg", "img/vaporfly-3-green-2.jpg"]
+      "thumbnails": ["img/vaporfly-3-green-1.jpg"]
     },
     {
       "id": 7,
@@ -87,7 +87,7 @@
       "status": true,
       "stock": 12,
       "category": "Basketball",
-      "thumbnails": ["img/jordan-4-white-1.jpg", "img/jordan-4-white-2.jpg"]
+      "thumbnails": ["img/jordan-4-white-1.jpg"]
     },
     {
       "id": 9,
@@ -98,7 +98,7 @@
       "status": true,
       "stock": 8,
       "category": "Futbol",
-      "thumbnails": ["img/mercurial-sf9-chrome-1.jpg", "img/mercurial-sf9-chrome-2.jpg"]
+      "thumbnails": ["img/mercurial-sf9-chrome-1.jpg"]
     },
     {
       "id": 10,

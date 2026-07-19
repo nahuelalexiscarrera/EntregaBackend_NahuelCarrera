@@ -1,15 +1,53 @@
-<h1>Registrarse</h1>
+<section class="auth-shell">
+    <div class="auth-intro auth-intro-register">
+        <p class="context-label">Nuevo perfil</p>
+        <h1>Prepará tu próxima salida.</h1>
+        <p>Creá tu cuenta para guardar el carrito y comprar en menos pasos.</p>
+        <ul class="auth-features">
+            <li>Tu carrito desde el primer día</li>
+            <li>Tus datos protegidos</li>
+            <li>Una compra simple y rápida</li>
+        </ul>
+    </div>
 
-<form id="registerForm" class="auth-form">
-    <input name="first_name" placeholder="Nombre" required />
-    <input name="last_name" placeholder="Apellido" required />
-    <input name="email" type="email" placeholder="Email" required />
-    <input name="age" type="number" placeholder="Edad" min="0" />
-    <input name="password" type="password" placeholder="Contraseña" required />
-    <button type="submit">Crear cuenta</button>
-    <p class="form-error" id="formError"></p>
-</form>
+    <div class="auth-panel">
+        <div class="auth-panel-heading">
+            <p class="section-index">Registro</p>
+            <h2>Crear cuenta</h2>
+            <p>Completá tus datos para empezar.</p>
+        </div>
 
-<p>¿Ya tenés cuenta? <a href="/login">Iniciá sesión</a></p>
+        <form id="registerForm" class="auth-form">
+            <div class="form-row">
+                <div class="field">
+                    <label for="register-name">Nombre</label>
+                    <input id="register-name" name="first_name" placeholder="Nombre" autocomplete="given-name" required>
+                </div>
+                <div class="field">
+                    <label for="register-lastname">Apellido</label>
+                    <input id="register-lastname" name="last_name" placeholder="Apellido" autocomplete="family-name" required>
+                </div>
+            </div>
+            <div class="field">
+                <label for="register-email">Email</label>
+                <input id="register-email" name="email" type="email" placeholder="nombre@ejemplo.com" autocomplete="email" required>
+            </div>
+            <div class="form-row">
+                <div class="field">
+                    <label for="register-age">Edad <span>(opcional)</span></label>
+                    <input id="register-age" name="age" type="number" placeholder="28" min="0" max="120" inputmode="numeric">
+                </div>
+                <div class="field">
+                    <label for="register-password">Contraseña</label>
+                    <input id="register-password" name="password" type="password" placeholder="Mínimo 6 caracteres" autocomplete="new-password" minlength="6" required>
+                </div>
+            </div>
+            <button class="button button-primary button-wide" type="submit">Crear cuenta</button>
+            <p class="form-error" id="formError" role="alert" aria-live="polite"></p>
+        </form>
+
+        <p class="auth-switch">¿Ya tenés cuenta? <a href="/login">Iniciá sesión</a></p>
+    </div>
+</section>
 
 <script src="/js/auth.js"></script>

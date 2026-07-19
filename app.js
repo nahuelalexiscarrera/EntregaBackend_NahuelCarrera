@@ -27,7 +27,17 @@ const io = new Server(httpServer)
 
 app.engine('handlebars', engine({
     helpers: {
-        eq: (a, b) => a === b
+        eq: (a, b) => a === b,
+        productImage: thumbnails => {
+            const image = Array.isArray(thumbnails) ? thumbnails[0] : ''
+            if (!image) return ''
+            if (/^(?:https?:)?\/\//.test(image) || image.startsWith('/')) return image
+            return `/${image}`
+        },
+        formatPrice: value => Number(value).toLocaleString('es-AR', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        })
     }
 }))
 app.set('view engine', 'handlebars')

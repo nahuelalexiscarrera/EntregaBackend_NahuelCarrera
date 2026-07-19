@@ -1,38 +1,92 @@
-<h1>Productos</h1>
-
-{{#if notFoundMessage}}
-<p>{{notFoundMessage}}</p>
-{{/if}}
-
-{{#if products.length}}
-<div class="product-grid">
-    {{#each products}}
-    <div class="product-card">
-        <h3>{{this.title}}</h3>
-        <p class="category">{{this.category}}</p>
-        <p class="price">${{this.price}}</p>
-        <p class="stock">Stock: {{this.stock}}</p>
-        <div class="actions">
-            <a href="/products/{{this._id}}">Ver detalle</a>
-            {{#if (eq @root.user.role 'user')}}
-            <button class="add-to-cart" data-pid="{{this._id}}" data-cart="{{@root.user.cart}}">Agregar al carrito</button>
-            {{/if}}
-        </div>
+<header class="catalog-hero">
+    <div class="hero-copy">
+        <p class="context-label">Nueva temporada</p>
+        <h1>Equipamiento que responde.</h1>
+        <p>Calzado e indumentaria para moverte todos los días, desde tus primeros kilómetros hasta tu próxima competencia.</p>
+        <a class="button button-accent" href="#catalogo">Explorar catálogo <span aria-hidden="true">↓</span></a>
     </div>
-    {{/each}}
-</div>
+    <div class="hero-visual" aria-hidden="true">
+        <span>Race / 26</span>
+        <img src="/img/vaporfly-3-green-1.jpg" alt="" width="960" height="960">
+    </div>
+</header>
 
-<div class="pagination">
-    {{#if pagination.hasPrevPage}}
-    <a href="{{pagination.prevLink}}">Anterior</a>
+<section class="catalog-section" id="catalogo" aria-labelledby="catalog-title">
+    <div class="section-heading">
+        <div>
+            <p class="section-index">Elegidos para vos</p>
+            <h2 id="catalog-title">Productos</h2>
+        </div>
+        <p class="section-note">Explorá por disciplina y encontrá tu próximo favorito.</p>
+    </div>
+
+    <nav class="filter-bar" aria-label="Filtrar productos por categoría">
+        <a href="/products" {{#unless currentQuery}}class="is-active" aria-current="page"{{/unless}}>Todos</a>
+        <a href="/products?query=Running" {{#if (eq currentQuery 'Running')}}class="is-active" aria-current="page"{{/if}}>Running</a>
+        <a href="/products?query=Lifestyle" {{#if (eq currentQuery 'Lifestyle')}}class="is-active" aria-current="page"{{/if}}>Lifestyle</a>
+        <a href="/products?query=Basketball" {{#if (eq currentQuery 'Basketball')}}class="is-active" aria-current="page"{{/if}}>Basketball</a>
+        <a href="/products?query=Futbol" {{#if (eq currentQuery 'Futbol')}}class="is-active" aria-current="page"{{/if}}>Fútbol</a>
+        <a href="/products?query=Ropa" {{#if (eq currentQuery 'Ropa')}}class="is-active" aria-current="page"{{/if}}>Indumentaria</a>
+    </nav>
+
+    {{#if notFoundMessage}}
+        <div class="empty-state" role="status">
+            <strong>Sin resultados</strong>
+            <p>{{notFoundMessage}}</p>
+            <a href="/products">Volver al catálogo</a>
+        </div>
     {{/if}}
-    <span>Página {{pagination.page}} de {{pagination.totalPages}}</span>
-    {{#if pagination.hasNextPage}}
-    <a href="{{pagination.nextLink}}">Siguiente</a>
+
+    {{#if products.length}}
+    <div class="product-grid">
+        {{#each products}}
+        <article class="product-card">
+            <a class="product-media" href="/products/{{this._id}}" aria-label="Ver detalle de {{this.title}}">
+                {{#if this.thumbnails}}
+                    <img src="{{productImage this.thumbnails}}" alt="{{this.title}}" width="960" height="960" loading="lazy">
+                {{else}}
+                    <span class="product-image-placeholder">Imagen no disponible</span>
+                {{/if}}
+                <span class="category-chip">{{this.category}}</span>
+            </a>
+            <div class="product-card-body">
+                <div class="product-card-heading">
+                    <h3><a href="/products/{{this._id}}">{{this.title}}</a></h3>
+                    <p class="price">USD {{formatPrice this.price}}</p>
+                </div>
+                <p class="stock"><span class="stock-indicator" aria-hidden="true"></span>{{this.stock}} unidades disponibles</p>
+                <div class="actions">
+                    <a class="button button-secondary" href="/products/{{this._id}}">Ver detalle</a>
+                    {{#if (eq @root.user.role 'user')}}
+                    <button class="button button-primary add-to-cart" type="button" data-pid="{{this._id}}" data-cart="{{@root.user.cart}}">Agregar al carrito</button>
+                    {{/if}}
+                </div>
+            </div>
+        </article>
+        {{/each}}
+    </div>
+
+    <nav class="pagination" aria-label="Paginación del catálogo">
+        {{#if pagination.hasPrevPage}}
+        <a class="button button-secondary" href="{{pagination.prevLink}}">← Anterior</a>
+        {{else}}
+        <span class="button button-secondary is-disabled" aria-disabled="true">← Anterior</span>
+        {{/if}}
+        <span class="page-count">Página <strong>{{pagination.page}}</strong> de {{pagination.totalPages}}</span>
+        {{#if pagination.hasNextPage}}
+        <a class="button button-secondary" href="{{pagination.nextLink}}">Siguiente →</a>
+        {{else}}
+        <span class="button button-secondary is-disabled" aria-disabled="true">Siguiente →</span>
+        {{/if}}
+    </nav>
+    {{else}}
+        {{#unless notFoundMessage}}
+        <div class="empty-state" role="status">
+            <strong>El catálogo está en preparación</strong>
+            <p>Todavía no hay productos para mostrar.</p>
+        </div>
+        {{/unless}}
     {{/if}}
-</div>
-{{else}}
-<p>No hay productos para mostrar.</p>
-{{/if}}
+</section>
 
 <script src="/js/products.js"></script>

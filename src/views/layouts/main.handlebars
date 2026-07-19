@@ -3,34 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Backend — Nahuel Carrera</title>
+    <meta name="description" content="Tienda online de calzado e indumentaria deportiva para running, lifestyle, basketball y fútbol.">
+    <meta name="theme-color" content="#11140f">
+    <title>AERIX — Calzado e indumentaria deportiva</title>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-    <nav>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+    <nav class="site-nav" aria-label="Navegación principal">
+        <a class="brand" href="/products" aria-label="AERIX, ir al catálogo">
+            <img class="brand-logo" src="/img/aerix-logo.png" alt="" width="800" height="516">
+        </a>
+
         <div class="nav-links">
-            <a href="/products">Productos</a>
+            <a href="/products">Catálogo</a>
             {{#if (eq user.role 'admin')}}
-                <a href="/realtimeproducts">Tiempo real</a>
+                <a href="/realtimeproducts">Administrar</a>
             {{/if}}
         </div>
+
         <div class="nav-session">
             {{#if user}}
-                <span>Bienvenido {{user.first_name}} ({{user.role}})</span>
+                <span class="session-label">
+                    <span class="status-dot" aria-hidden="true"></span>
+                    {{#if (eq user.role 'admin')}}
+                        Administrador
+                    {{else}}
+                        Hola, {{user.first_name}}
+                    {{/if}}
+                </span>
                 {{#if (eq user.role 'user')}}
-                    <a href="/carts/{{user.cart}}">Mi carrito</a>
+                    <a class="nav-cart" href="/carts/{{user.cart}}">Mi carrito</a>
                 {{/if}}
-                <button id="logoutBtn">Cerrar sesión</button>
+                <button class="button button-ghost button-compact" id="logoutBtn" type="button">Salir</button>
             {{else}}
-                <a href="/login">Iniciar sesión</a>
-                <a href="/register">Registrarse</a>
+                <a href="/login">Ingresar</a>
+                <a class="button button-accent button-compact" href="/register">Crear cuenta</a>
             {{/if}}
         </div>
     </nav>
 
-    <main>
+    <main id="contenido" tabindex="-1">
         {{{body}}}
     </main>
+
+    <footer class="site-footer">
+        <div class="footer-brand">
+            <img class="footer-logo" src="/img/aerix-logo.png" alt="AERIX" width="800" height="516">
+            <span>Calzado e indumentaria deportiva</span>
+        </div>
+        <p>Running · Lifestyle · Basketball · Fútbol</p>
+        <p>© 2026 AERIX</p>
+    </footer>
 
     <script src="/js/session.js"></script>
 </body>

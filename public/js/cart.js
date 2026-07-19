@@ -23,11 +23,11 @@ if (purchaseBtn) {
             const { code, amount, purchaser } = data.payload.ticket
             const pending = data.payload.notProcessedIds.length
             result.innerHTML = `
-                <h3>Compra realizada</h3>
-                <p>Ticket: ${code}</p>
+                <h3>¡Compra confirmada!</h3>
+                <p>Número de compra: ${code}</p>
                 <p>Total: $${amount}</p>
-                <p>Comprador: ${purchaser}</p>
-                ${pending ? `<p>${pending} producto(s) quedaron en el carrito por falta de stock.</p>` : ''}
+                <p>Enviamos la confirmación a: ${purchaser}</p>
+                ${pending ? `<p>${pending} producto(s) siguen en tu carrito porque ya no tienen stock suficiente.</p>` : ''}
             `
             purchaseBtn.disabled = true
         } else {
